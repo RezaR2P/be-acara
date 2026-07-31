@@ -56,8 +56,15 @@ const UserSchema = new Schema<User>(
 );
 
 UserSchema.pre('save', async function () {
-  this.password = encrypt(this.password);
+  const user = this;
+  user.password = encrypt(user.password);
 });
+
+UserSchema.methods.toJSON = function () {
+  const user = this.Object();
+  delete user.password;
+  return user;
+};
 
 const UserModel = mongoose.model('User', UserSchema);
 
