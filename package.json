@@ -22,7 +22,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoos": "^0.0.1-security",
     "tsx": "^4.23.1",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
     "yup": "^1.7.1"
   }
 }
