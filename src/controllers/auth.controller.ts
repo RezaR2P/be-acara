@@ -29,7 +29,10 @@ const registerValidateSchema = Yup.object({
 });
 
 export default {
+  // Pindahkan atau pastikan blok komentar berada di baris pertama di dalam fungsi
   async register(req: Request, res: Response) {
+    /* #swagger.tags = ['Auth'] */
+
     const { fullName, userName, email, password, confirmPassword } =
       req.body as unknown as TRegister;
     try {
@@ -60,31 +63,25 @@ export default {
       });
     }
   },
+
   async login(req: Request, res: Response) {
-    /**
-  #swagger.requestBody = {
-    required: true,
-    content: {
-      "application/json": {
-        schema: { $ref: "#/components/schemas/LoginRequest" }
+    /* 
+      #swagger.tags = ['Auth']
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: { $ref: "#/components/schemas/LoginRequest" }
+          }
+        }
       }
-    }
-  }
-   */
+    */
 
     const { identifier, password } = req.body as unknown as TLogin;
     try {
       // ambil data user berdasarkan identifier -> email dan username
-
       const userByIdentifier = await UserModel.findOne({
-        $or: [
-          {
-            email: identifier,
-          },
-          {
-            userName: identifier,
-          },
-        ],
+        $or: [{ email: identifier }, { userName: identifier }],
       });
 
       if (!userByIdentifier) {
@@ -124,11 +121,12 @@ export default {
   },
 
   async me(req: IReqUser, res: Response) {
-    /**
-     #swagger.security = [{
-     "bearerAuth": []
-     }]
-     */
+    /* 
+      #swagger.tags = ['Auth']
+      #swagger.security = [{
+        "bearerAuth": []
+      }]
+    */
 
     try {
       const user = req.user;

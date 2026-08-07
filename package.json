@@ -14,22 +14,26 @@
   "type": "commonjs",
   "dependencies": {
     "@types/body-parser": "^1.19.6",
+    "@types/cors": "2.8.17",
+    "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/mongoose": "^5.11.96",
+    "@types/nodemailer": "^8.0.1",
+    "@types/swagger-ui-express": "4.1.6",
     "body-parser": "^2.3.0",
+    "cors": "2.8.5",
     "dotenv": "^17.4.2",
+    "ejs": "^3.1.10",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.3",
     "mongoos": "^0.0.1-security",
+    "nodemailer": "^6.9.14",
     "nodemon": "3.1.4",
-    "ts-node": "10.9.2",
-    "typescript": "5.4.5",
-    "yup": "^1.7.1",
     "swagger-autogen": "2.23.7",
     "swagger-ui-express": "4.6.3",
-    "cors": "2.8.5",
-    "@types/swagger-ui-express": "4.1.6",
-    "@types/cors": "2.8.17"
+    "ts-node": "10.9.2",
+    "typescript": "5.4.5",
+    "yup": "^1.7.1"
   }
 }
