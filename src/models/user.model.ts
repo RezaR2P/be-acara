@@ -27,14 +27,17 @@ const UserSchema = new Schema<User>(
     userName: {
       type: Schema.Types.String,
       required: true,
+      unique: true,
     },
     email: {
       type: Schema.Types.String,
       required: true,
+      unique: true,
     },
     password: {
       type: Schema.Types.String,
       required: true,
+      minlength: 6,
     },
     role: {
       type: Schema.Types.String,
@@ -61,6 +64,7 @@ const UserSchema = new Schema<User>(
 UserSchema.pre('save', async function () {
   const user = this;
   user.password = encrypt(user.password);
+  user.activationCode = encrypt(user.id);
 });
 
 UserSchema.post('save', async function (doc, next) {

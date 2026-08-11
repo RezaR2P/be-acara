@@ -22,7 +22,27 @@ const registerValidateSchema = Yup.object({
   fullName: Yup.string().required(),
   userName: Yup.string().required(),
   email: Yup.string().required(),
-  password: Yup.string().required(),
+  password: Yup.string()
+    .required()
+    .min(6, 'Password must be at least 6 characters')
+    .test(
+      'at-least-one-uppercase-letter',
+      'contains at least one uppercase letter',
+      (value) => {
+        if (!value) return false;
+        const regex = /^(?=.*[A-Z])/;
+        return regex.test(value);
+      }
+    )
+    .test(
+      'at-least-one-number',
+      'contains at least one number',
+      (value: string) => {
+        if (!value) return false;
+        const regex = /^(?=.*\d)/;
+        return regex.test(value);
+      }
+    ),
   confirmPassword: Yup.string()
     .required()
     .oneOf([Yup.ref('password'), ''], 'Password Not Match'),
@@ -31,7 +51,9 @@ const registerValidateSchema = Yup.object({
 export default {
   // Pindahkan atau pastikan blok komentar berada di baris pertama di dalam fungsi
   async register(req: Request, res: Response) {
-    /* #swagger.tags = ['Auth'] */
+    /**  
+      #swagger.tags = ['Auth']
+    */
 
     const { fullName, userName, email, password, confirmPassword } =
       req.body as unknown as TRegister;
@@ -65,7 +87,7 @@ export default {
   },
 
   async login(req: Request, res: Response) {
-    /* 
+    /**  
       #swagger.tags = ['Auth']
       #swagger.requestBody = {
         required: true,
@@ -82,6 +104,7 @@ export default {
       // ambil data user berdasarkan identifier -> email dan username
       const userByIdentifier = await UserModel.findOne({
         $or: [{ email: identifier }, { userName: identifier }],
+        isActive: true,
       });
 
       if (!userByIdentifier) {
@@ -121,7 +144,7 @@ export default {
   },
 
   async me(req: IReqUser, res: Response) {
-    /* 
+    /**  
       #swagger.tags = ['Auth']
       #swagger.security = [{
         "bearerAuth": []
@@ -134,6 +157,41 @@ export default {
       res.status(200).json({
         message: 'Success Get User Profile',
         data: result,
+      });
+    } catch (error) {
+      const err = error as unknown as Error;
+      res.status(400).json({
+        message: err.message,
+        data: null,
+      });
+    }
+  },
+  async activation(req: Request, res: Response) {
+    /**  
+      #swagger.tags = ['Auth']
+      #swagger.requestBody = {
+        required: true,
+        schema: { $ref: '#/components/schemas/ActivationRequest' }
+      }
+    */
+    try {
+      const { code } = req.body as { code: string };
+
+      const user = await UserModel.findOneAndUpdate(
+        {
+          activationCode: code,
+        },
+        {
+          isActive: true,
+        },
+        {
+          new: true,
+        }
+      );
+
+      res.status(200).json({
+        message: 'Account Activated Successfully',
+        data: user,
       });
     } catch (error) {
       const err = error as unknown as Error;

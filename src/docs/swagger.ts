@@ -23,8 +23,18 @@ const doc = {
     },
     schemas: {
       LoginRequest: {
-        identifier: 'eaza',
-        password: 'tes123',
+        identifier: 'reza123',
+        password: 'Reza123',
+      },
+      RegisterRequest: {
+        fullName: 'Eza',
+        userName: 'eaza',
+        email: 'reza@yopmail.com',
+        password: '11223344',
+        confirmPassword: '11223344',
+      },
+      ActivationRequest: {
+        code: 'abcdef',
       },
     },
   },
